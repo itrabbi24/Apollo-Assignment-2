@@ -7,7 +7,7 @@ const BookSchema = new Schema<IBook>({
     required: true,
     message: 'Title is required',
   },
-  
+
   author: {
     type: String,
     required: true,
@@ -29,7 +29,7 @@ const BookSchema = new Schema<IBook>({
   category: {
     type: String,
     required: [true, 'Category is required'],
-    enum: Object.values(Category),
+    enum: Object.values(Category) as string[],
   },
 
   description: {

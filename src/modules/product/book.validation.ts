@@ -10,7 +10,7 @@ const categories = [
 
 
 // Define book schema
-export const bookSchema = z.object({
+export const ZodBookValidationSchema = z.object({
 
   title: z.string({ message: 'Title is required' }),
   author: z.string({ message: 'Author is required' }),
@@ -35,3 +35,6 @@ export const bookSchema = z.object({
     .min(0, { message: 'Quantity must be a non-negative integer' }),
   inStock: z.boolean().default(true), // Default to true
 });
+
+
+export default ZodBookValidationSchema;
