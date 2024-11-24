@@ -49,6 +49,11 @@ const BookSchema = new Schema<IBook>({
     required: true,
     message: 'Book inStock status is required',
     default: true // by default true are active, when false the inactive
+  },
+  isDelete: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 
 

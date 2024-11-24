@@ -15,4 +15,5 @@ export interface IBook{
     description: string;
     quantity: number;
     inStock: boolean;
+    isDelete: boolean;
 }
