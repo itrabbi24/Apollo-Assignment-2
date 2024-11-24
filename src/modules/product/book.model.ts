@@ -7,7 +7,7 @@ const BookSchema = new Schema<IBook>({
     required: true,
     message: 'Title is required',
   },
-
+  
   author: {
     type: String,
     required: true,
