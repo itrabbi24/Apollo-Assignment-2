@@ -1,40 +1,18 @@
 import { z } from 'zod';
-
-const categories = [
-  'Fiction',
-  'Science',
-  'SelfDevelopment',
-  'Poetry',
-  'Religious',
-] as const;
+import { Category } from './book.interface';
 
 
 // Define book schema
-export const ZodBookValidationSchema = z.object({
 
-  title: z.string({ message: 'Title is required' }),
-  author: z.string({ message: 'Author is required' }),
-  price: z
-    .number({
-      invalid_type_error: 'Price must be a number',
-      required_error: 'Price is required',
-    })
-    .min(0, { message: 'Price must be a non-negative number' }),
-  category: z.enum(categories, {
-    errorMap: () => ({
-      message: 'Category must be one of the predefined values',
-    }),
-  }),
-  description: z.string({ message: 'Description is required' }),
-  quantity: z
-    .number({
-      invalid_type_error: 'Quantity must be a number',
-      required_error: 'Quantity is required',
-    })
-    .int({ message: 'Quantity must be an integer' })
-    .min(0, { message: 'Quantity must be a non-negative integer' }),
-  inStock: z.boolean().default(true), // Default to true
+const ZodBookValidationSchema = z.object({
+  title: z.string().min(1, 'Title is required'),
+  author: z.string().min(1, 'Author is required'),
+  price: z.number().min(0, 'Price must be non-negative'),
+  category: z.nativeEnum(Category), // Use nativeEnum for enum validation
+  description: z.string().min(1, 'Description is required'),
+  quantity: z.number().min(0, 'Quantity must be greater than or equal to 0'),
+  inStock: z.boolean().default(true),
 });
 
-
+// Export book schema
 export default ZodBookValidationSchema;

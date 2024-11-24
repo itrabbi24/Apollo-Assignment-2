@@ -12,3 +12,10 @@ const CreateBook = async (data : IBook) => {
     }
 };
 
+
+
+
+
+export const BookService = {
+    CreateBook
+}

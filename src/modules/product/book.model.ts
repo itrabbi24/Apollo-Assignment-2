@@ -29,7 +29,7 @@ const BookSchema = new Schema<IBook>({
   category: {
     type: String,
     required: [true, 'Category is required'],
-    enum: Object.values(Category) as string[],
+    enum: Object.values(Category),
   },
 
   description: {
