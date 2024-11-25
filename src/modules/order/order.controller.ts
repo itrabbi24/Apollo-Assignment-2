@@ -14,7 +14,7 @@ const CreateOrder = async (req: Request, res: Response) => {
     // Send success response
     return res.status(200).json({
       success: true,
-      message: 'Product created successfully!',
+      message: 'Order created successfully!',
       data: result,
     });
   } catch (error) {

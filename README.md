@@ -1,6 +1,8 @@
 # **Book Shop** 📚
 
-An Express application built with TypeScript, integrated with MongoDB via Mongoose, to manage a Book Store. This application supports robust inventory management, order placement, and revenue calculation.
+This project is an Express application developed with TypeScript, integrating MongoDB with Mongoose for effective to manage a Book Store. It ensures data integrity through validation using Zod. This application supports robust product store, order placement, and revenue calculation.
+
+## Preview - [Live Site](https://apollo-assignment-2-nine.vercel.app/)
 
 ---
 
@@ -101,7 +103,7 @@ npm run dev
 
 ## **Example Request and Responses** 📬
 
-### **Create a Book**
+### **1. Create a Book**
 **Request:**  
 `POST /api/products`
 ```json
@@ -132,6 +134,152 @@ npm run dev
     "inStock": true,
     "createdAt": "2024-11-19T10:23:45.123Z",
     "updatedAt": "2024-11-19T10:23:45.123Z"
+  }
+}
+```
+
+### **2. Get All Books**
+
+- **Endpoint:** **`/api/products`**
+- **Method:** `GET`
+- **Response:** A list of all books with details like name, author, price, category, etc.
+- Query: A list of all books from the same category, you’ll take this as `/api/products?searchTerm=category` searchTerm can be `title, author, category`
+
+```jsx
+{
+  "message": "Books retrieved successfully",
+  "status": true,
+  "data": [
+    {
+      "_id": "648a45e5f0123c45678d9012",
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "price": 10,
+      "category": "Fiction",
+      "description": "A story about the American dream.",
+      "quantity": 100,
+      "inStock": true,
+      "createdAt": "2024-11-19T10:23:45.123Z",
+      "updatedAt": "2024-11-19T10:23:45.123Z",
+    },
+    // ... rest data
+  ]
+}
+```
+
+---
+
+### **3. Get a Specific Book**
+
+- **Endpoint:** **`/api/products/:productId`**
+- **Method:** `GET`
+- **Response:** The details of a specific book by ID.
+
+```jsx
+{
+  "message": "Book retrieved successfully",
+  "status": true,
+  "data": {
+    "_id": "648a45e5f0123c45678d9012",
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "price": 10,
+    "category": "Fiction",
+    "description": "A story about the American dream.",
+    "quantity": 100,
+    "inStock": true,
+    "createdAt": "2024-11-19T10:23:45.123Z",
+    "updatedAt": "2024-11-19T10:23:45.123Z",
+  }
+}
+```
+
+---
+
+### **4. Update a Book**
+
+- **Endpoint:** **`/api/products/:productId`**
+- **Method:** `PUT`
+- **Request Body:** (Book details to update)
+
+```json
+{
+  "price": 15,
+  "quantity": 25,
+}
+```
+
+- **Response:** Success message and updated book details.
+
+```jsx
+{
+  "message": "Book updated successfully",
+  "status": true,
+  "data": {
+    "_id": "648a45e5f0123c45678d9012",
+    "name": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "price": 15,  // Price updated
+    "category": "Fiction",
+    "description": "A story about the American dream.",
+    "quantity": 25,  // Quantity updated
+    "inStock": true,
+    "createdAt": "2024-11-19T10:23:45.123Z",
+    "updatedAt": "2024-11-19T11:00:00.000Z",  // Updated timestamp
+  }
+}
+```
+
+---
+
+### **5. Delete a Book**
+
+- **Endpoint:** **`/api/products/:productId`**
+- **Method:** `DELETE`
+- **Response:** Success message confirming the book has been deleted.
+
+```jsx
+{
+  "message": "Book deleted successfully",
+  "status": true,
+  "data": {}
+}
+```
+
+
+### **6. Order a Book**
+
+- **Endpoint:** **`/api/orders`**
+- **Method:** `POST`
+- **Inventory Management Logic:**
+  - When an order is placed, reduce the **quantity** in the product model.
+  - If the inventory quantity goes to zero, set **inStock** to `false`.
+  - Handle **insufficient stock** cases by returning an appropriate error message.
+- **Request Body:**
+
+```json
+{
+  "email": "customer@example.com",
+  "product": "648a45e5f0123c45678d9012",
+  "quantity": 2,
+  "totalPrice": 30
+}
+```
+
+- **Response:** Success message confirming the order.
+
+```jsx
+{
+  "message": "Order created successfully",
+  "status": true,
+  "data": {
+    "_id": "648b45f5e1234b56789a6789",
+    "email": "customer@example.com",
+    "product": "648a45e5f0123c45678d9012",
+    "quantity": 2,
+    "totalPrice": 30,
+    "createdAt": "2024-11-19T12:00:00.000Z",
+    "updatedAt": "2024-11-19T12:00:00.000Z",
   }
 }
 ```
