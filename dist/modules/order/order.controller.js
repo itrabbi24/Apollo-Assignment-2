@@ -25,7 +25,7 @@ const CreateOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         // Send success response
         return res.status(200).json({
             success: true,
-            message: 'Product created successfully!',
+            message: 'Order created successfully!',
             data: result,
         });
     }

@@ -13,15 +13,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderService = void 0;
+const book_model_1 = require("../product/book.model");
 const order_model_1 = __importDefault(require("./order.model"));
 // create order
 const CreateOrder = (data) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        // Find the product
+        const book = yield book_model_1.BookModel.findOne({ _id: data.product });
+        // Check if the product exists
+        if (!book) {
+            throw new Error('Book not found');
+        }
+        // Check if there is enough stock
+        if (book.quantity < data.quantity) {
+            throw new Error('Insufficient stock');
+        }
+        console.log(book.quantity < data.quantity);
+        // Reduce the quantity of the product
+        book.quantity -= data.quantity;
+        // If stock goes to zero, set inStock to false
+        if (book.quantity === 0) {
+            book.inStock = false;
+        }
+        // Save the updated book to the database
+        yield book.save();
+        // Create the order in the database
         const order = yield order_model_1.default.create(data);
+        // Return the created order
         return order;
     }
     catch (error) {
-        console.log(error);
+        if (error instanceof Error) {
+            console.error('Error in creating order:', error.message);
+            throw new Error(error.message);
+        }
     }
 });
 // calculate revenue
