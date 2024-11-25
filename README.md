@@ -324,6 +324,15 @@ npm run dev
 }
 ```
 
+## Coding Tools and Libraries
+
+- **Express:** Web framework for Node.js.
+- **Mongoose:** ODM for MongoDB.
+- **Zod:** TypeScript-first schema declaration and validation library.
+- **TypeScript:** JavaScript with syntax for types.
+- **ESLint:** Linting tool for identifying and reporting on patterns in JavaScript.
+
+
 ---
 
 ## **Testing** 🧪
