@@ -11,7 +11,7 @@ const ZodBookValidationSchema = zod_1.z.object({
     description: zod_1.z.string().min(1, 'Description is required'),
     quantity: zod_1.z.number().min(0, 'Quantity must be greater than or equal to 0'),
     inStock: zod_1.z.boolean().default(true),
-    isDelete: zod_1.z.boolean(),
+    isDelete: zod_1.z.boolean().default(false),
 });
 // Export book schema
 exports.default = ZodBookValidationSchema;

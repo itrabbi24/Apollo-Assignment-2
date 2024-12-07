@@ -3,15 +3,15 @@ import { IOrder } from './order.interface';
 
 const OrderSchema = new Schema<IOrder>({
   
-    email: {
+  email: {
     type: String,
     required: [true, 'Email is required']
   },
-  product:{
+  product: {
     type: String,
     required: [true, 'Product is required']
   },
-  quantity:{
+  quantity: {
     type: Number,
     required: [true, 'Quantity is required']
   },
@@ -26,8 +26,7 @@ const OrderSchema = new Schema<IOrder>({
       message: 'Price must be a valid number !',
     },
   }
-
-});
+}, { timestamps: true });  
 
 const OrderModel = model<IOrder>('Order', OrderSchema);
 

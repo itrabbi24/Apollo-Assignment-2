@@ -16,4 +16,6 @@ export interface IBook{
     quantity: number;
     inStock: boolean;
     isDelete: boolean;
+    createdAt?: Date; 
+    updatedAt?: Date; 
 }

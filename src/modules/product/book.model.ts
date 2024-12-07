@@ -49,15 +49,20 @@ const BookSchema = new Schema<IBook>({
     required: true,
     message: 'Book inStock status is required',
     default: true // by default true are active, when false the inactive
-  },
-  isDelete: {
+  },isDelete: {
     type: Boolean,
-    required: true,
     default: false
-  }
+  },
+}, { timestamps: true });
 
-
+// remove delete field from response
+BookSchema.set('toJSON', {
+  transform: (doc, ret, options) => {
+    const { isDelete, ...rest } = ret; 
+    return rest;
+  },
 });
+
 
 
 export const BookModel = model<IBook>('Book', BookSchema);
