@@ -25,6 +25,6 @@ const OrderSchema = new mongoose_1.Schema({
             message: 'Price must be a valid number !',
         },
     }
-});
+}, { timestamps: true });
 const OrderModel = (0, mongoose_1.model)('Order', OrderSchema);
 exports.default = OrderModel;
