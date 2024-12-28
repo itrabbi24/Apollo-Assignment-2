@@ -1,10 +1,20 @@
 import ZodBookValidationSchema from './book.validation';
 import { BookService } from './book.service';
-import { ZodError } from 'zod';
-import { Request, Response } from 'express';
+import { promise, ZodError } from 'zod';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
+import sendResponse from '../../utlis/sendResponse';
+import { HttpStatus } from 'http-status-ts';
+
+const catchAsync = (fn) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    Promise.resolve(fn(req, res, next)).catch(next);
+  };
+};
 
 // Create Book
-const CreateBook = async (req: Request, res: Response): Promise<Response> => {
+const CreateBook: RequestHandler = async (req, res, next) => {
+  // const CreateBook : RequestHandler = async (req, res, next) => {
+  // const CreateBook = async (req: Request, res: Response, next: NextFunction) => {
   try {
     // validation the request from body using zot
     const bookData = ZodBookValidationSchema.parse(req.body);
@@ -13,27 +23,36 @@ const CreateBook = async (req: Request, res: Response): Promise<Response> => {
     const result = await BookService.CreateBook(bookData);
 
     // Send success response
-    return res.status(200).json({
+    // return res.status(200).json({
+    //   success: true,
+    //   message: 'Product created successfully!',
+    //   data: result,
+    // });
+
+    sendResponse(res, {
+      statusCode: HttpStatus.OK,
       success: true,
       message: 'Product created successfully!',
       data: result,
     });
   } catch (error: unknown) {
-    if (error instanceof ZodError) {
-      // Handle validation errors
-      return res.status(400).json({
-        success: false,
-        message: 'Validation error',
-        errors: error.errors,
-      });
-    }
+    next(error);
+
+    // if (error instanceof ZodError) {
+    //   // Handle validation errors
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: 'Validation error',
+    //     errors: error.errors,
+    //   });
+    // }
 
     // Handle other errors
-    return res.status(500).json({
-      success: false,
-      message: 'Something went wrong',
-      error: (error as Error).message,
-    });
+    // return res.status(500).json({
+    //   success: false,
+    //   message: 'Something went wrong',
+    //   error: (error as Error).message,
+    // });
   }
 };
 
@@ -74,7 +93,6 @@ const GetBookById = async (req: Request, res: Response) => {
   }
 };
 
-
 // Update Book By Id
 const UpdateBook = async (req: Request, res: Response) => {
   try {
@@ -95,7 +113,6 @@ const UpdateBook = async (req: Request, res: Response) => {
   }
 };
 
-
 // Delete Book By Id
 const DeleteBook = async (req: Request, res: Response) => {
   try {
@@ -115,11 +132,10 @@ const DeleteBook = async (req: Request, res: Response) => {
   }
 };
 
-
 export const BookController = {
   CreateBook,
   GetAllBooks,
   GetBookById,
   UpdateBook,
-  DeleteBook
+  DeleteBook,
 };
