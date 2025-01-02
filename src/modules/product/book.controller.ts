@@ -5,56 +5,82 @@ import { NextFunction, Request, RequestHandler, Response } from 'express';
 import sendResponse from '../../utlis/sendResponse';
 import { HttpStatus } from 'http-status-ts';
 
-const catchAsync = (fn) => {
+
+
+const catchAsync = (fn : RequestHandler) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    Promise.resolve(fn(req, res, next)).catch(next);
+    Promise.resolve(fn(req, res, next)).catch(err => next(err));
   };
 };
 
+
+
 // Create Book
-const CreateBook: RequestHandler = async (req, res, next) => {
-  // const CreateBook : RequestHandler = async (req, res, next) => {
-  // const CreateBook = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    // validation the request from body using zot
-    const bookData = ZodBookValidationSchema.parse(req.body);
-
-    // crete book request
-    const result = await BookService.CreateBook(bookData);
-
-    // Send success response
-    // return res.status(200).json({
-    //   success: true,
-    //   message: 'Product created successfully!',
-    //   data: result,
-    // });
-
-    sendResponse(res, {
-      statusCode: HttpStatus.OK,
-      success: true,
-      message: 'Product created successfully!',
-      data: result,
-    });
-  } catch (error: unknown) {
-    next(error);
-
-    // if (error instanceof ZodError) {
-    //   // Handle validation errors
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: 'Validation error',
-    //     errors: error.errors,
-    //   });
-    // }
-
-    // Handle other errors
-    // return res.status(500).json({
-    //   success: false,
-    //   message: 'Something went wrong',
-    //   error: (error as Error).message,
-    // });
+const CreateBook = catchAsync(
+  async (req, res, next) => {
+      const bookData = ZodBookValidationSchema.parse(req.body);
+      // crete book request
+      const result = await BookService.CreateBook(bookData);
+      sendResponse(res, {
+        statusCode: HttpStatus.OK,
+        success: true,
+        message: 'Product created successfully!',
+        data: result,
+      });
   }
-};
+);
+
+
+
+// // Create Book
+// const CreateBook: RequestHandler = async (req, res, next) => {
+//   // const CreateBook : RequestHandler = async (req, res, next) => {
+//   // const CreateBook = async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//     // validation the request from body using zot
+//     const bookData = ZodBookValidationSchema.parse(req.body);
+
+//     // crete book request
+//     const result = await BookService.CreateBook(bookData);
+
+//     // Send success response
+//     // return res.status(200).json({
+//     //   success: true,
+//     //   message: 'Product created successfully!',
+//     //   data: result,
+//     // });
+
+//     sendResponse(res, {
+//       statusCode: HttpStatus.OK,
+//       success: true,
+//       message: 'Product created successfully!',
+//       data: result,
+//     });
+//   } catch (error: unknown) {
+//     next(error);
+
+//     // if (error instanceof ZodError) {
+//     //   // Handle validation errors
+//     //   return res.status(400).json({
+//     //     success: false,
+//     //     message: 'Validation error',
+//     //     errors: error.errors,
+//     //   });
+//     // }
+
+//     // Handle other errors
+//     // return res.status(500).json({
+//     //   success: false,
+//     //   message: 'Something went wrong',
+//     //   error: (error as Error).message,
+//     // });
+//   }
+// };
+
+
+
+
+
 
 //   Get all books
 const GetAllBooks = async (req: Request, res: Response) => {
