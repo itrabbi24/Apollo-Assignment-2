@@ -1,7 +1,13 @@
-import express, { Router } from 'express';
+import express, { NextFunction, Request, Response, Router } from 'express';
 import { BookController } from './book.controller';
 
 const router = Router();
+
+const middleware = (req: Request, res: Response, next: NextFunction) => {
+    // console.log('Middleware called');
+  console.log(req.body);
+    next();
+  };
 
 // import book controller
 const { CreateBook, GetAllBooks, GetBookById, UpdateBook, DeleteBook } = BookController;
@@ -11,7 +17,7 @@ const { CreateBook, GetAllBooks, GetBookById, UpdateBook, DeleteBook } = BookCon
 router.post("/", CreateBook);
 
 // @ts-ignore
-router.get("/", GetAllBooks);
+router.get("/", middleware, GetAllBooks);
 
 // @ts-ignore
 router.get("/:productId", GetBookById);

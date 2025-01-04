@@ -3,7 +3,7 @@ import { BookService } from './book.service';
 import { promise, ZodError } from 'zod';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import sendResponse from '../../utlis/sendResponse';
-import { HttpStatus } from 'http-status-ts';
+import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../utlis/catchAsync';
 
 
@@ -18,7 +18,7 @@ const CreateBook = catchAsync(
       // crete book request
       const result = await BookService.CreateBook(bookData);
       sendResponse(res, {
-        statusCode: HttpStatus.OK,
+        statusCode: StatusCodes.OK,
         success: true,
         message: 'Product created successfully!',
         data: result,
@@ -82,6 +82,7 @@ const CreateBook = catchAsync(
 const GetAllBooks = async (req: Request, res: Response) => {
   try {
     const result = await BookService.GetAllBooks();
+    console.log('result', result);
     return res.status(200).json({
       success: true,
       message: 'Products fetched successfully!',
