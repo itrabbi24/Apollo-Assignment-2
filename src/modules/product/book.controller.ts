@@ -4,14 +4,10 @@ import { promise, ZodError } from 'zod';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import sendResponse from '../../utlis/sendResponse';
 import { HttpStatus } from 'http-status-ts';
+import catchAsync from '../../utlis/catchAsync';
 
 
 
-const catchAsync = (fn : RequestHandler) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    Promise.resolve(fn(req, res, next)).catch(err => next(err));
-  };
-};
 
 
 
